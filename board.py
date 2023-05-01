@@ -4,8 +4,15 @@ import copy
 suit: 0-3 with values 
 0: Clubs
 1: Diamonds
-2: Spades
-3: Hearts
+2: Hearts
+3: Spades
+
+order in foundation
+club
+spade
+heart
+diamond
+
 
 
 Values: 
@@ -45,8 +52,8 @@ class Board:
 
     @staticmethod
     def check_stack_ok(card1, card2):
-        color = 1 if card1[0] % 2 == 0 else 0
-        color2 = 1 if card2[0] % 2 == 0 else 0
+        color = 1 if card1[0] == 1 or card1[0] == 2 else 0
+        color2 = 1 if card2[0] == 1 or card2[0] == 2 else 0
         value = card1[1]
         value2 = card2[1]
 
