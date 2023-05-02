@@ -61,6 +61,14 @@ def depth_first_search(board, moves):
             curr_moves.pop()
 
         location = board.check_stack(curr_card)
+        for i in location:
+            updated_board = board.move(curr_card, 1, i)
+            curr_moves.append((curr_card, (2, i)))
+            curr_score, curr_moves = depth_first_search(updated_board, curr_moves)
+            if curr_score < min_score:
+                min_score = curr_score
+                min_score_moves = curr_moves
+            curr_moves.pop()
 
 
     # tries all moves from the freecells
@@ -72,6 +80,16 @@ def depth_first_search(board, moves):
         if location:
             updated_board = board.move(curr_card, 2, location)
             curr_moves.append((curr_card, (2, location)))
+            curr_score, curr_moves = depth_first_search(updated_board, curr_moves)
+            if curr_score < min_score:
+                min_score = curr_score
+                min_score_moves = curr_moves
+            curr_moves.pop()
+
+        location = board.check_stack(curr_card)
+        for i in location:
+            updated_board = board.move(curr_card, 1, i)
+            curr_moves.append((curr_card, (2, i)))
             curr_score, curr_moves = depth_first_search(updated_board, curr_moves)
             if curr_score < min_score:
                 min_score = curr_score
