@@ -60,7 +60,7 @@ def getStacks(pid):
     
         for i in list_buf:
             if(i!=''):
-               # print("Next:", i)
+                print("Next:", i)
                 if(i=="\\t"):
                     current_stack.append("09")
                 elif(i=="\\r"):
@@ -71,11 +71,11 @@ def getStacks(pid):
                     current_stack.append("00")
                     if(i[:6]=="\\x00\\x"):
                         current_stack.append(i[6:])
-                    elif(i=="\\t"):
+                    elif(i=="\\x00\\t"):
                         current_stack.append("09")
-                    elif(i=="\\r"):
+                    elif(i=="\\x00\\r"):
                         current_stack.append("0D")
-                    elif(i=="\\n"):
+                    elif(i=="\\x00\\n"):
                         current_stack.append("0A")
                     else:
                         current_stack.append(i[4:].encode("utf-8").hex())
@@ -83,7 +83,7 @@ def getStacks(pid):
                     current_stack.append(i[2:])
                 else:
                     current_stack.append(i.encode("utf-8").hex())
-        #print(current_stack)
+        print(current_stack)
         stacks_strings.append(current_stack)
             
     #order is clubs, diamonds, spades, hearts
@@ -92,7 +92,7 @@ def getStacks(pid):
         stack_tuples = []
         for card in stack:
             if(int(card,16)>52):
-                raise Exception("CARD OUT OF BOUNDS")
+                raise Exception("CARD OUT OF BOUNDS", int(card,16))
             suit = int(card,16) % 4 #0 is club, 1 is diamonds, 2 is hearts, 3 is spades
             value = int(card,16)//4 +1
             stack_tuples.append((suit, value))
