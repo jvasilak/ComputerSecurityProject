@@ -101,7 +101,7 @@ def getStacks(pid):
     return(final_stacks)
     
 
-print_board(getStacks(1988))
+#print_board(getStacks(1988))
     
     
         

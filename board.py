@@ -33,7 +33,7 @@ class Board:
         self.freecell = board.freecell
         self.stack = board.stack
         self.foundation = board.foundation'''
-
+    
     def check_free(self, card):
         for i in range(len(self.freecell)):
             if not self.freecell[i]:
@@ -88,6 +88,7 @@ class Board:
         else:
             self.stack[index].pop()
 
+
     def move(self, card, location, index):
 
         new_board = copy.deepcopy(self)
@@ -101,5 +102,7 @@ class Board:
             new_board.foundation[index].append(card)
         return new_board
 
+    def unmove(self, card, location, index):
+        
 
 
