@@ -43,7 +43,7 @@ class Board:
 
     def check_found(self, card):
         suit, value = card[0], card[1]
-        if (value == 1 and not self.foundation[suit]) or (self.foundation[suit] and value == (self.foundation[suit][-1] + 1)):
+        if (value == 1 and not self.foundation[suit]) or (self.foundation[suit] and value == (self.foundation[suit][-1][-1] + 1)):
             return suit
         return None
 

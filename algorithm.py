@@ -7,6 +7,8 @@ def find_card_location_score(card, board):
             if value[0] == card[0] and value[1] == card[1]:
                 return [i, j]
     for i, value in enumerate(board.freecell):
+        if value == None:
+            continue
         if value[0] == card[0] and value[1] == card[1]:
             return [0, 0]
     return [-1, -1] # should never be reached
@@ -18,7 +20,7 @@ def find_state_score(board):
         if not card:
             next_cards.append((i, 1))
         else:
-            next_cards.append((i[0], i[1]+1))
+            next_cards.append((card[0][0], card[0][1]+1))
 
     for i in next_cards:
         location = find_card_location_score(i, board)
@@ -35,7 +37,6 @@ def check_freecells_score(freecells, score):
 
 def depth_first_search(board, moves):
     if len(moves) == 6:
-        print(find_state_score(board))
         return find_state_score(board), moves
     
     min_score = sys.maxsize
@@ -48,7 +49,7 @@ def depth_first_search(board, moves):
         curr_card = column[-1]
         # try stack, freecells, and foundations individually, then have to iterate through stack moves
         location = board.check_free(curr_card)
-        if location:
+        if location != None:
             updated_board = board.move(curr_card, 0, location)
             curr_moves.append((curr_card, (0, location)))
             curr_score, curr_moves = depth_first_search(updated_board, curr_moves)
@@ -58,7 +59,7 @@ def depth_first_search(board, moves):
             curr_moves.pop()
         
         location = board.check_found(curr_card)
-        if location:
+        if location != None:
             updated_board = board.move(curr_card, 2, location)
             curr_moves.append((curr_card, (2, location)))
             curr_score, curr_moves = depth_first_search(updated_board, curr_moves)
@@ -74,6 +75,7 @@ def depth_first_search(board, moves):
             updated_board = board.move(curr_card, 1, i)
             curr_moves.append((curr_card, (2, i)))
             curr_score, curr_moves = depth_first_search(updated_board, curr_moves)
+            print(curr_score)
             if curr_score < min_score:
                 min_score = curr_score
                 min_score_moves = curr_moves
@@ -88,7 +90,7 @@ def depth_first_search(board, moves):
         curr_moves = moves
         curr_card = entry
         location = board.check_found(curr_card)
-        if location:
+        if location != None:
             updated_board = board.move(curr_card, 2, location)
             curr_moves.append((curr_card, (2, location)))
             curr_score, curr_moves = depth_first_search(updated_board, curr_moves)
@@ -102,9 +104,11 @@ def depth_first_search(board, moves):
             updated_board = board.move(curr_card, 1, i)
             curr_moves.append((curr_card, (2, i)))
             curr_score, curr_moves = depth_first_search(updated_board, curr_moves)
+            print(curr_score)
             if curr_score < min_score:
                 min_score = curr_score
                 min_score_moves = curr_moves
             curr_moves.pop()
-
+    if min_score == sys.maxsize:
+        min_score_moves = list()
     return min_score, min_score_moves

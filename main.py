@@ -3,7 +3,7 @@ from algorithm import *
 from getStacks import *
 from board import *
 
-pid = 11584
+pid = 1164
 stacks = getStacks(pid)
 print(stacks)
 
