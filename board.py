@@ -29,10 +29,10 @@ class Board:
         self.stack = [[],[],[],[],[],[],[],[]]
         self.foundation = [[],[],[],[]]
 
-    def __init__(self, board):
+    '''def __init__(self, board):
         self.freecell = board.freecell
         self.stack = board.stack
-        self.foundation = board.foundation
+        self.foundation = board.foundation'''
 
     def check_free(self, card):
         for i in range(len(self.freecell)):
@@ -48,7 +48,7 @@ class Board:
         return None
 
     def check_stack(self, card):
-        yield from (index for index, stack in enumerate(self.stack) if stack and self.move_stack_ok(card, stack[-1]) or not stack)
+        yield from (index for index, stack in enumerate(self.stack) if stack and self.check_stack_ok(card, stack[-1]) or not stack)
 
     @staticmethod
     def check_stack_ok(card1, card2):
@@ -96,9 +96,9 @@ class Board:
         if location == 0:
             new_board.freecell[index] = card
         elif location == 1:
-            new_board.stack[index].push(card)
+            new_board.stack[index].append(card)
         else:
-            new_board.foundation[index].push(card)
+            new_board.foundation[index].append(card)
         return new_board
 
 
