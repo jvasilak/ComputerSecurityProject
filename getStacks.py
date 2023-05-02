@@ -10,6 +10,7 @@ def print_board(s):
     for stack in s:
         print("Stack "+ str(s_count)+ ":")
         for card in stack:
+            #print(card)
             print(values[card[1]-1],suits[card[0]])
         print("\n")
         s_count +=1
@@ -51,7 +52,7 @@ def getStacks(pid):
         else:
             print("fail")
     
-        print("\n")
+        #print()
         str_buf = (str(buf.raw)[2:])[:-1]
         #print(str_buf)
         list_buf = (str_buf.split("\\x00\\x00\\x00"))
@@ -68,12 +69,21 @@ def getStacks(pid):
                     current_stack.append("0A")
                 elif(i[:4]=="\\x00"):
                     current_stack.append("00")
-                    current_stack.append(i[4:].encode("utf-8").hex())
+                    if(i[:6]=="\\x00\\x"):
+                        current_stack.append(i[6:])
+                    elif(i=="\\t"):
+                        current_stack.append("09")
+                    elif(i=="\\r"):
+                        current_stack.append("0D")
+                    elif(i=="\\n"):
+                        current_stack.append("0A")
+                    else:
+                        current_stack.append(i[4:].encode("utf-8").hex())
                 elif(i[:2]=="\\x"):
                     current_stack.append(i[2:])
                 else:
                     current_stack.append(i.encode("utf-8").hex())
-        
+        #print(current_stack)
         stacks_strings.append(current_stack)
             
     #order is clubs, diamonds, spades, hearts
@@ -81,14 +91,17 @@ def getStacks(pid):
     for stack in stacks_strings:
         stack_tuples = []
         for card in stack:
+            if(int(card,16)>52):
+                raise Exception("CARD OUT OF BOUNDS")
             suit = int(card,16) % 4 #0 is club, 1 is diamonds, 2 is hearts, 3 is spades
             value = int(card,16)//4 +1
             stack_tuples.append((suit, value))
         final_stacks.append(stack_tuples)
+    print()
     return(final_stacks)
     
-    
-print_board(getStacks(1604))
+
+print_board(getStacks(1988))
     
     
         
