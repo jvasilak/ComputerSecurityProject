@@ -13,23 +13,26 @@ locations = ["freecell", "stack", "foundation"]
 board = Board()
 board.stack = stacks
 moves = list()
-moves2 = list()
-old_board = copy.deepcopy(board)
 print("Computing Moves...")
 
-score, moves = depth_first_search(board, moves)
-for i in moves:
-    board = board.move(i[0], i[1][0], i[1][1])
-print("Computing again...")
-score, moves2 = depth_first_search(board, moves2)
-moves = moves + moves2
-print(score, moves)
-print(board.freecell, board.foundation, "\n", board.stack)
+#score, moves = depth_first_search(board, moves)
 
-'''
+
+while not board.win():
+    curr_moves = list()
+    score, curr_moves = depth_first_search(board, curr_moves)
+    moves = moves + curr_moves
+    for i in curr_moves:
+        board = board.move(i[0], i[1][0], i[1][1])
+
 while len(moves) > 0:
     curr_move = moves[0]
     moves = moves[1:]
-    print("Move the ", , " to ", ".")
-    print("Move the ", , " to ", " row ", ".")
-'''
+    if curr_move[1][1] != 1:
+        print("Move the", values[curr_move[0][1]-1], suits[curr_move[0][0]], "to", locations[curr_move[1][0]], ".")
+    else:
+        row = curr_move[1][1] + 1
+        print("Move the", values[curr_move[0][1]-1], suits[curr_move[0][0]], "to", locations[curr_move[1][1]], "row", row, ".")
+    input("Press enter to continue...")
+
+print("Congratulations! You won!")
